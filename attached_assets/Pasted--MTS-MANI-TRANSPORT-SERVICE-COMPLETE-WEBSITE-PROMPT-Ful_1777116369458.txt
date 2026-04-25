@@ -1,0 +1,907 @@
+# 🚗 MTS (MANI TRANSPORT SERVICE) - COMPLETE WEBSITE PROMPT
+## Full-Stack Transport Booking Platform with Admin Dashboard
+
+---
+
+# 📌 PROJECT OVERVIEW
+
+Build a modern, luxury, fully responsive animated website for **MTS (Mani Transport Service)** with:
+- ✅ Public customer website (7 pages)
+- ✅ Secure admin dashboard (Firebase authenticated)
+- ✅ Real-time data synchronization
+- ✅ WhatsApp & Email integration
+- ✅ Route image upload capability
+
+---
+
+# 🏢 COMPANY INFORMATION
+
+**Company Name:** MTS - Mani Transport Service  
+**Tagline:** "Safe, Reliable & Comfortable Door-to-Door Pick & Drop Service"
+
+**Owner:** Abdul Rehman Mani
+
+**Contact Details:**
+- Phone 1: 0310-5605600
+- Phone 2: 0328-5605600
+- Email: malikmanii34567@gmail.com
+- WhatsApp: 923105605600 (for wa.me link)
+
+**Address:**
+Plaza #30, Office #01, Ground Floor, Linear Commercial Phase 8, Bahria Town, Rawalpindi
+
+**Services:** School Pick & Drop | College Transport | University Transport | Rent a Car | Private Booking
+
+---
+
+# 🎨 DESIGN SPECIFICATION
+
+## Color Palette:
+- **Primary Red:** #DC143C (Crimson Red for CTAs and highlights)
+- **Secondary Red:** #FF6B6B (Light red for hover states)
+- **Black:** #1A1A1A (Dark text and elements)
+- **White:** #FFFFFF (Clean backgrounds)
+- **Gray:** #F5F5F5 (Secondary backgrounds)
+- **Dark Gray:** #333333 (Text)
+
+## Typography:
+- **Headings:** Bold, Sans-serif (Poppins, Montserrat)
+- **Body:** Clean, readable (Open Sans, Inter)
+
+## Design Features:
+- ✅ Luxury modern UI with transport theme
+- ✅ Smooth animations (fade-in, slide-up, bounce, hover effects)
+- ✅ Sticky navigation bar with active page indicator
+- ✅ Mobile-first responsive design (320px - 1920px)
+- ✅ Floating WhatsApp chat button (bottom-right)
+- ✅ Floating "Send Message" button (bottom-left)
+- ✅ Loading states and spinners
+- ✅ Icons from Lucide React or similar
+
+---
+
+# 🌐 PUBLIC WEBSITE PAGES (7 PAGES)
+
+## PAGE 1: HOME PAGE
+**URL:** `/`
+
+### Hero Section:
+- Animated background (moving road/transport theme with SVG or gradient)
+- Large heading: "MTS - Mani Transport Service"
+- Subheading: "Safe, Reliable & Comfortable Door-to-Door Pick & Drop Service"
+- Two prominent CTA buttons:
+  - "📱 Book Now" → Links to contact form with pre-filled subject
+  - "💬 WhatsApp Now" → Opens https://wa.me/923105605600?text=Hello%20MTS%20Transport%20Service
+- Smooth fade-in animation on page load
+
+### Quick Highlights Section:
+4 cards with icons:
+1. 🛡️ Safe Drivers - "Trained professional drivers with verified credentials"
+2. ⏰ On-Time Service - "100% punctual pickup and drop"
+3. 🪑 Comfortable Travel - "Premium seating with AC/Non-AC options"
+4. 💰 Affordable Pricing - "Competitive rates for all budget ranges"
+
+Hover effect: Cards lift up with shadow animation
+
+### Our Fleet Summary:
+- Display statistics:
+  - 80+ Vans
+  - 5+ Coaster Buses
+  - 30+ Hiace Box Vehicles
+  - All GPS Enabled
+
+### Call-to-Action Section:
+Large button: "View All Services →"
+
+### Footer:
+- Company info
+- Quick links
+- Social media placeholders
+- Contact details
+- Copyright
+
+---
+
+## PAGE 2: ABOUT US PAGE
+**URL:** `/about`
+
+### Introduction Section:
+- Heading: "About MTS - Mani Transport Service"
+- Paragraph: Company mission and introduction
+- "At MTS, we provide safe, reliable, and comfortable door-to-door transportation for students and families."
+
+### Mission & Vision:
+**Mission:**
+- Safe student and family transport services
+- Reliable pickup and drop services across Rawalpindi
+- Affordable yet premium transport experience
+
+**Why Choose Us:**
+- 10+ years of experience (or as per actual)
+- 1000+ satisfied families
+- 24/7 customer support
+- All vehicles GPS tracked
+- Professional trained drivers
+
+### Service Overview:
+Brief overview of:
+- School transportation
+- College transport services
+- University transport
+- Rental services
+
+### Business Branches:
+- Transport Services (main focus)
+- Real Estate & Builders (mention briefly)
+
+### Call-to-Action:
+"Ready to book? Contact us today!" → Links to /contact page
+
+---
+
+## PAGE 3: SERVICES PAGE
+**URL:** `/services`
+
+### Page Title:
+"Our Services"
+
+### Service Cards (6 Cards):
+Each card has:
+- Icon (from Lucide)
+- Service Name
+- Description (2-3 lines)
+- "Learn More" button
+
+**Card 1: School Pick & Drop**
+- Icon: 🎒 (School/Backpack)
+- Description: "Safe and timely pickup and drop for school students from doorstep to school and back."
+- Hover: Lift with shadow + Red underline
+
+**Card 2: College Transport**
+- Icon: 🎓 (Graduation Cap)
+- Description: "Comfortable daily commute for college-going students with flexible timings."
+
+**Card 3: University Transport**
+- Icon: 📚 (Books)
+- Description: "Premium transport service for university students with AC vehicles and professional drivers."
+
+**Card 4: Rent a Car Service**
+- Icon: 🚗 (Car)
+- Description: "Rent our well-maintained vehicles for tours, events, or personal use."
+
+**Card 5: Private Family Booking**
+- Icon: 👨‍👩‍👧‍👦 (Family)
+- Description: "Dedicated transport solution for family trips and outings."
+
+**Card 6: Corporate Transport**
+- Icon: 🏢 (Building)
+- Description: "Professional transport services for corporate employees and official events."
+
+### Hover Animation:
+- Cards scale up (1.05x)
+- Color shift from white to light red background
+- Shadow increase
+
+---
+
+## PAGE 4: ROUTES PAGE (DYNAMIC - MOST IMPORTANT)
+**URL:** `/routes`
+
+### Page Title:
+"Our Routes"
+
+### Filter Section:
+3 filter buttons (pill-shaped):
+- ☑️ All Routes (active by default)
+- 🎒 School Routes
+- 🎓 College Routes
+- 📚 University Routes
+
+### Routes Display:
+**Option: Card-based layout (recommended)**
+
+Each route card displays:
+- 🗺️ Route title (e.g., "Bahria Town → DHA Route")
+- Starting Point
+- Destination
+- Covered Institutions (text list)
+- Vehicle Type (Vans / Buses / Hiace)
+- Timing (if available)
+- Optional: Route image/flyer (if admin uploaded)
+
+**Card Features:**
+- Clean white background with red accent border
+- Hover effect: Red shadow glow
+- Badge: Route category (School/College/University)
+
+### Example Routes (Hardcoded initially, then replaced by Firebase):
+1. **Bahria Town → DHA Route**
+   - From: Bahria Town, Rawalpindi
+   - To: DHA Phase, Islamabad
+   - Covered: DHA Schools, DHA Colleges
+   - Timing: 7:00 AM - 2:00 PM
+   - Vehicle: Vans & Hiace
+
+2. **Gulrez → PWD Route**
+   - From: Gulrez, Rawalpindi
+   - To: PWD Road, Rawalpindi
+   - Covered: Government Colleges
+   - Timing: 8:00 AM - 3:00 PM
+   - Vehicle: Buses & Vans
+
+3. **Saddar → Rawalpindi Route**
+   - From: Saddar Bazaar, Rawalpindi
+   - To: Rawalpindi City Center
+   - Covered: Private Colleges, Universities
+   - Timing: 7:30 AM - 4:00 PM
+   - Vehicle: All Vehicles
+
+### No Routes Found:
+If no routes in database, show: "No routes available. Please check back soon!"
+
+### Filter Functionality:
+When filter applied:
+- Show only routes matching the category
+- Smooth fade transition
+- Update URL (optional): `/routes?category=school`
+
+---
+
+## PAGE 5: FLEET PAGE
+**URL:** `/fleet`
+
+### Page Title:
+"Our Fleet"
+
+### Fleet Statistics Section:
+3 stat boxes:
+- 80+ Vans - "For small groups and daily commute"
+- 5+ Coaster Buses - "For large groups and events"
+- 30+ Hiace Box Vehicles - "For comfortable family travel"
+
+Each box:
+- Large number with icon
+- Brief description
+- Hover animation: Scale up + color change
+
+### Vehicle Features Section:
+4 feature cards:
+1. 🌡️ AC & Non-AC Options
+   - "Climate control for your comfort"
+
+2. 📍 GPS Tracking
+   - "Real-time vehicle tracking for safety"
+
+3. 👨‍💼 Trained Drivers
+   - "Verified and professional drivers"
+
+4. 🛡️ Safety Ensured
+   - "All vehicles regularly maintained"
+
+### Featured Vehicles Carousel/Slider:
+Display 3-4 vehicle cards:
+- Vehicle image placeholder (can be updated)
+- Vehicle type (Van / Bus / Hiace)
+- Capacity: X passengers
+- Features: AC, GPS, Power steering
+- Condition: New/Excellent/Good
+
+Carousel controls:
+- Previous/Next buttons
+- Auto-play (optional)
+- Dots indicator
+
+---
+
+## PAGE 6: CONTACT PAGE
+**URL:** `/contact`
+
+### Page Title:
+"Get in Touch"
+
+### Contact Form Section:
+Form with validation:
+
+**Fields:**
+1. Name (text input)
+   - Required: Yes
+   - Placeholder: "Your full name"
+
+2. Phone Number (tel input)
+   - Required: Yes
+   - Placeholder: "+92 300 1234567"
+   - Validation: Must be valid Pakistan number
+
+3. Pickup Location (text input)
+   - Required: No
+   - Placeholder: "Where should we pick you up?"
+
+4. Message / Query (textarea)
+   - Required: No
+   - Placeholder: "Tell us about your transport needs..."
+
+**Submit Button:**
+- Text: "Send Message"
+- Color: Red background, white text
+- On hover: Darker red
+- Loading state: Spinner with "Sending..."
+
+### Form Submission Behavior:
+1. Validate required fields (Name, Phone)
+2. Show loading spinner
+3. Send to **EmailJS**:
+   - Email to: malikmanii34567@gmail.com
+   - Subject: "New Contact Form Submission from [Name]"
+   - Body: Name, Phone, Pickup Location, Message
+4. Also store in **Firebase Firestore** (collection: `contactRequests`)
+5. Success message: "✅ Thank you! We will contact you shortly."
+6. Clear form after submission
+7. Auto-dismiss message after 5 seconds
+
+### Contact Information Section:
+**Below the form:**
+
+📞 **Quick Call:**
+- Button: "Call 0310-5605600"
+- Links to: `tel:+923105605600`
+- Button: "Call 0328-5605600"
+- Links to: `tel:+923285605600`
+
+💬 **WhatsApp Chat:**
+- Button: "Chat on WhatsApp"
+- Links to: `https://wa.me/923105605600?text=Hello%20MTS%20Transport%20Service`
+
+📍 **Address:**
+- "Plaza #30, Office #01, Ground Floor, Linear Commercial Phase 8, Bahria Town, Rawalpindi"
+
+📧 **Email:**
+- "malikmanii34567@gmail.com"
+
+---
+
+## PAGE 7: FAQ PAGE
+**URL:** `/faqs`
+
+### Page Title:
+"Frequently Asked Questions"
+
+### FAQ Accordions:
+(Expandable/Collapsible sections)
+
+**Q1: How do I book a transport service?**
+A: "You can book by filling out the contact form on our website or WhatsApp us directly. Our team will confirm your booking within 24 hours."
+
+**Q2: What are your monthly subscription charges?**
+A: "Monthly charges vary based on your route and vehicle type. Please contact us for customized pricing."
+
+**Q3: What safety measures do you implement?**
+A: "All our vehicles are GPS-tracked, regularly maintained, and driven by verified professional drivers. We prioritize safety above all."
+
+**Q4: Which routes are currently available?**
+A: "We operate routes covering Bahria Town, DHA, Gulrez, PWD, Saddar, and other areas in Rawalpindi. Visit our Routes page for details."
+
+**Q5: Do you offer AC vehicles?**
+A: "Yes, we have both AC and Non-AC vehicles. You can choose based on your preference and budget."
+
+**Q6: Can I cancel or modify my booking?**
+A: "Yes, cancellations and modifications can be made up to 24 hours before the scheduled pickup."
+
+**Q7: Are drivers trained and verified?**
+A: "Absolutely. All our drivers are professionally trained, verified, and have clean driving records."
+
+**Q8: Do you provide customized routes?**
+A: "Yes, we can create customized routes for groups and corporate bookings. Contact us for details."
+
+### Accordion Styling:
+- White background with red accent on left border
+- Title bold, clickable
+- Icon: + / - to show expand/collapse
+- Smooth animation on expand
+- Hover: Light gray background
+
+---
+
+# 💬 FLOATING BUTTONS & FEATURES
+
+## Floating Message Button (Bottom-Left):
+- Fixed position: bottom 30px, left 20px
+- Icon: 💬 Message or 📝 Form
+- Background: Red (#DC143C)
+- Text: "Send Message"
+- On click: Opens modal form
+
+### Modal Form (Popup):
+- Title: "Send us a Message"
+- Fields:
+  1. Name (required)
+  2. Phone Number (required)
+  3. Message (required)
+- Buttons: Send | Close
+- On submit:
+  - Send to **EmailJS** to: malikmanii34567@gmail.com
+  - Subject: "Customer Message from [Name]"
+  - Store in Firebase: collection `messages`
+  - Show: "✅ Message sent! Thank you."
+  - Close modal after 3 seconds
+
+## Floating WhatsApp Button (Bottom-Right):
+- Fixed position: bottom 30px, right 20px
+- Icon: 💬 WhatsApp (Green)
+- Background: #25D366
+- On click: Opens https://wa.me/923105605600?text=Hello%20MTS%20Transport%20Service
+- Tooltip on hover: "Chat with us"
+- Mobile: Stack both buttons vertically or hide one
+
+## Navigation Bar (Sticky):
+- Fixed at top
+- Background: White with subtle shadow
+- Links:
+  - MTS Logo (links to home)
+  - Home
+  - About
+  - Services
+  - Routes
+  - Fleet
+  - Contact
+  - FAQ
+- Mobile: Hamburger menu (3 lines icon)
+- Active page: Underlined in red
+- Right side: Phone icon with "Call Now" button
+
+---
+
+# 🧑‍💻 ADMIN DASHBOARD (SECURE)
+
+## Admin Login Page
+**URL:** `/admin/login`
+
+### Login Form:
+- Username field (required)
+- Password field (required)
+- "Login" button (red background)
+- Error message: "Invalid credentials. Please try again."
+
+### Authentication:
+- Use **Firebase Authentication**
+- Create admin account with email: `admin@mts-transport.com`
+- Password: Secure, encrypted
+- Alternative: Use email/password with Firebase
+
+### Redirect Logic:
+- If logged in: Redirect to `/admin/dashboard`
+- If not logged in: Show login page
+- Logout button in dashboard
+
+---
+
+## ADMIN DASHBOARD HOME
+**URL:** `/admin/dashboard`
+
+### Dashboard Header:
+- Welcome message: "Welcome, Admin!"
+- Logout button (top-right)
+
+### Stats Section (3 Cards):
+1. Total Messages: [Count from Firebase]
+2. Total Contact Requests: [Count from Firebase]
+3. Total Routes: [Count from Firebase]
+
+### Quick Actions:
+- Buttons:
+  - ➕ Add New Route
+  - 📨 View Messages
+  - 📋 View Contacts
+  - ⚙️ Settings
+
+---
+
+## ADMIN FEATURE 1: ROUTE MANAGEMENT
+**URL:** `/admin/routes`
+
+### Routes Table/List:
+Display all routes with:
+- Route ID
+- Route Title
+- Starting Point
+- Destination
+- Category (School/College/University)
+- Vehicle Type
+- Actions: Edit | Delete | View Image
+
+### Add New Route:
+Button: "➕ Add New Route" → Opens Form Modal
+
+**Form Fields:**
+1. Route Title (required)
+   - Placeholder: "Bahria Town → DHA Route"
+
+2. Starting Point (required)
+   - Placeholder: "Bahria Town, Rawalpindi"
+
+3. Destination (required)
+   - Placeholder: "DHA Phase, Islamabad"
+
+4. Covered Institutions (optional)
+   - Placeholder: "School A, College B, University C"
+
+5. Category (required) - Dropdown:
+   - School
+   - College
+   - University
+
+6. Vehicle Type (required) - Checkbox (can select multiple):
+   - ☐ Vans
+   - ☐ Coaster Buses
+   - ☐ Hiace Box Vehicles
+
+7. Timing (optional)
+   - Placeholder: "7:00 AM - 2:00 PM"
+
+8. Route Image Upload (optional)
+   - "Choose file" button
+   - Accepted: JPG, PNG (max 5MB)
+   - Preview after upload
+   - Upload to **Firebase Storage** (`routes/[routeId]/image`)
+
+**Form Buttons:**
+- Save Route (Red button)
+- Cancel (Gray button)
+
+### Edit Route:
+- Click "Edit" on any route
+- Same form opens with pre-filled data
+- Update and save
+- Show: "✅ Route updated successfully!"
+
+### Delete Route:
+- Click "Delete" on any route
+- Confirmation modal: "Are you sure?"
+- Delete from Firebase
+- Remove from Firestore
+
+### Real-time Sync:
+- Changes appear immediately on `/routes` page
+- No page refresh needed (Firebase real-time listener)
+
+---
+
+## ADMIN FEATURE 2: MESSAGE MANAGEMENT
+**URL:** `/admin/messages`
+
+### Messages Table:
+Display all customer messages with columns:
+- Message ID
+- Customer Name
+- Phone Number
+- Message Preview (first 50 chars)
+- Status: (Unresolved / Resolved)
+- Date
+- Actions: View Full | Mark as Resolved | Delete
+
+### View Full Message:
+- Click "View Full" → Opens modal with full message
+- Show all details:
+  - Name
+  - Phone
+  - Complete Message
+  - Date/Time
+- Buttons: Mark as Resolved | Delete | Close
+
+### Mark as Resolved:
+- Changes status to "Resolved"
+- Message moves to resolved section (optional)
+- Show: "✅ Marked as resolved"
+
+### Delete Message:
+- Confirmation: "Delete this message?"
+- Remove from Firebase
+
+### Filter Messages:
+- Buttons: All | Unresolved | Resolved
+- Show count for each
+
+---
+
+## ADMIN FEATURE 3: CONTACT REQUESTS
+**URL:** `/admin/contacts`
+
+### Contact Requests Table:
+Similar to messages but for contact form submissions:
+- Contact ID
+- Name
+- Phone Number
+- Pickup Location (if provided)
+- Message
+- Status: New / Replied
+- Date
+- Actions: View | Mark as Replied | Delete
+
+### View Contact:
+- Modal with all details
+- Same functionality as messages
+
+---
+
+## ADMIN FEATURE 4: SETTINGS (OPTIONAL)
+**URL:** `/admin/settings`
+
+### Settings Form:
+- Phone Number 1: [Current value] - Edit field
+- Phone Number 2: [Current value] - Edit field
+- WhatsApp Number: [Current value] - Edit field
+- Email: [Current value] - Edit field
+- Company Address: [Current value] - Edit textarea
+
+**Save Button:** "Update Settings" (Red)
+
+### Behavior:
+- Save changes to Firebase Firestore (collection: `settings`)
+- Changes appear on public website within seconds
+- Show: "✅ Settings updated successfully!"
+
+---
+
+# 🔧 TECHNICAL REQUIREMENTS
+
+## Frontend Framework:
+- **React** or **Next.js** (recommended: Next.js for better SEO)
+- **Responsive Design:** Mobile-first (320px, 768px, 1024px, 1920px breakpoints)
+- **State Management:** React Context API or Redux (for admin auth state)
+
+## Backend Services:
+
+### 1. Firebase Setup:
+- **Firebase Authentication:**
+  - Email/password auth for admin login
+  - Create admin account: `admin@mts-transport.com`
+
+- **Firestore Database Structure:**
+  ```
+  ├── routes/
+  │   ├── routeId1
+  │   │   ├── title: "Bahria Town → DHA"
+  │   │   ├── startPoint: "Bahria Town"
+  │   │   ├── destination: "DHA"
+  │   │   ├── coveredInstitutions: "School A, College B"
+  │   │   ├── category: "school"
+  │   │   ├── vehicleType: ["vans", "hiace"]
+  │   │   ├── timing: "7:00 AM - 2:00 PM"
+  │   │   ├── imageUrl: "URL from Firebase Storage"
+  │   │   └── createdAt: timestamp
+  │
+  ├── messages/
+  │   ├── messageId1
+  │   │   ├── name: "John"
+  │   │   ├── phone: "03105605600"
+  │   │   ├── message: "Message text"
+  │   │   ├── status: "unresolved"
+  │   │   └── createdAt: timestamp
+  │
+  ├── contactRequests/
+  │   ├── contactId1
+  │   │   ├── name: "Jane"
+  │   │   ├── phone: "03285605600"
+  │   │   ├── pickupLocation: "Bahria Town"
+  │   │   ├── message: "Query text"
+  │   │   └── createdAt: timestamp
+  │
+  ├── settings/
+  │   ├── phone1: "0310-5605600"
+  │   ├── phone2: "0328-5605600"
+  │   ├── whatsappNumber: "923105605600"
+  │   ├── email: "malikmanii34567@gmail.com"
+  │   └── address: "Plaza #30..."
+  ```
+
+- **Firebase Storage:**
+  - Bucket: `routes/` for route images
+  - Structure: `routes/[routeId]/image.jpg`
+  - Max file size: 5MB
+  - Public read access (but admin upload only)
+
+### 2. EmailJS Integration:
+- **Setup:**
+  - Sign up at emailjs.com
+  - Create email service
+  - Create email template
+  - Get Service ID, Template ID, Public Key
+
+- **Usage:**
+  - Send contact form emails to: malikmanii34567@gmail.com
+  - Subject: "New Contact Form Submission from [Name]"
+  - Fields: name, phone, pickupLocation, message
+
+- **Implementation:**
+  ```javascript
+  import emailjs from '@emailjs/browser';
+  
+  const sendEmail = async (formData) => {
+    await emailjs.send(
+      'SERVICE_ID',
+      'TEMPLATE_ID',
+      {
+        to_email: 'malikmanii34567@gmail.com',
+        from_name: formData.name,
+        from_email: formData.phone,
+        message: formData.message
+      },
+      'PUBLIC_KEY'
+    );
+  };
+  ```
+
+### 3. WhatsApp Integration:
+- **Method:** Use WhatsApp Web API via wa.me links
+- **Links:**
+  - Button: `https://wa.me/923105605600?text=Hello%20MTS%20Transport%20Service`
+  - Floating button: Same link
+  - Contact page button: Same link
+
+### 4. Google Maps (Optional - Text-based only for now):
+- Skip for MVP, can be added later
+- Use text-based route descriptions instead
+
+---
+
+# 📱 RESPONSIVE DESIGN REQUIREMENTS
+
+## Breakpoints:
+- **Mobile:** 320px - 640px
+  - Single column layout
+  - Hamburger menu
+  - Larger touch targets (44px minimum)
+  - Full-width buttons
+
+- **Tablet:** 641px - 1024px
+  - 2-column grid for services/routes
+  - Sidebar navigation
+
+- **Desktop:** 1025px+
+  - Full multi-column layout
+  - Full horizontal navigation bar
+
+## Mobile Specific:
+- Floating buttons stack vertically or hide one
+- Touch-friendly spacing
+- Readable font sizes
+- Optimized images
+- No horizontal scrolling
+
+---
+
+# ⚡ PERFORMANCE & OPTIMIZATION
+
+1. **Images:**
+   - Lazy loading for route images
+   - Compress all images (WebP format)
+   - Progressive image loading
+
+2. **Code Splitting:**
+   - Admin routes separate bundle
+   - Public routes separate bundle
+
+3. **Caching:**
+   - Firebase caching enabled
+   - Service worker for offline capability (optional)
+
+4. **SEO Optimization:**
+   - Meta tags for each page
+   - Sitemap (auto-generated)
+   - Schema markup for business
+   - Mobile-friendly meta viewport
+
+---
+
+# 🎬 ANIMATIONS & INTERACTIONS
+
+## Page Load Animations:
+- Hero text: Fade in + slide up
+- Service cards: Stagger fade-in (0.2s delay each)
+- Route cards: Fade in as user scrolls
+
+## Hover Animations:
+- Service cards: Scale 1.05, shadow increase
+- Route cards: Red glow border
+- Buttons: Brightness increase, slight scale
+- Links: Color change to red
+
+## Scroll Animations:
+- Parallax effect on hero section (optional)
+- Elements fade in when scrolled into view
+- Smooth scroll behavior
+
+---
+
+# ✅ DEPLOYMENT & HOSTING
+
+## Frontend Hosting:
+- **Firebase Hosting** (recommended)
+- **Vercel** (if using Next.js)
+- **Netlify** (alternative)
+
+## Domain:
+- Custom domain: `mts-transport.com` or similar
+
+## SSL/HTTPS:
+- Automatic with Firebase/Vercel
+
+---
+
+# 📋 DELIVERABLES CHECKLIST
+
+## Public Website:
+- ✅ Home Page (animated hero, highlights, CTA)
+- ✅ About Us (company info, mission, trust building)
+- ✅ Services (6 service cards with hover animation)
+- ✅ Routes (dynamic from Firebase, filterable, image support)
+- ✅ Fleet (vehicle display, carousel, features)
+- ✅ Contact (form with EmailJS, phone buttons)
+- ✅ FAQ (expandable accordions)
+
+## Admin Dashboard:
+- ✅ Secure login (Firebase Auth)
+- ✅ Route management (CRUD operations)
+- ✅ Message management (view, mark resolved, delete)
+- ✅ Contact request tracking
+- ✅ Settings panel (update company info)
+
+## Floating Features:
+- ✅ WhatsApp floating button (bottom-right)
+- ✅ Message form floating button (bottom-left)
+
+## Integrations:
+- ✅ Firebase (auth, Firestore, storage)
+- ✅ EmailJS (contact form emails)
+- ✅ WhatsApp API (wa.me links)
+
+## Responsive Design:
+- ✅ Mobile (320px+)
+- ✅ Tablet (768px+)
+- ✅ Desktop (1024px+)
+
+---
+
+# 🚀 BUILD INSTRUCTIONS
+
+1. **Create React/Next.js project**
+2. **Setup Firebase project:**
+   - Create Firestore collections
+   - Setup Authentication
+   - Create Storage bucket
+3. **Setup EmailJS:**
+   - Create email templates
+   - Get API keys
+4. **Design UI Components:**
+   - Navigation bar
+   - Service cards
+   - Route cards
+   - Forms
+5. **Implement pages:**
+   - Build all 7 public pages
+   - Add animations
+6. **Build admin panel:**
+   - Login page
+   - Dashboard
+   - Management pages
+7. **Test & Deploy:**
+   - Mobile responsive testing
+   - Form submissions
+   - Firebase integration
+   - Deploy to Firebase Hosting
+
+---
+
+# 📞 SUPPORT & CONTACT
+
+For questions or modifications:
+- Email: malikmanii34567@gmail.com
+- Phone: 0310-5605600
+- WhatsApp: 923105605600
+
+---
+
+**Status:** Ready for Development  
+**Version:** 1.0  
+**Last Updated:** 2024
+
+---
