@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { storage } from "@/lib/storage";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -40,8 +41,13 @@ export default function Contact() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
-    // Simulate API call
     setTimeout(() => {
+      storage.addContact({
+        name: values.name,
+        phone: values.phone,
+        pickupLocation: values.pickupLocation || "",
+        message: values.message || "",
+      });
       setIsSubmitting(false);
       toast({
         title: "Message Sent Successfully!",
