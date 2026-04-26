@@ -8,6 +8,7 @@ import {
   DeleteContactParams,
 } from "@workspace/api-zod";
 import { sendWhatsAppNotification } from "../lib/whatsapp";
+import { sendContactNotification } from "../lib/email";
 
 const router: IRouter = Router();
 
@@ -43,6 +44,13 @@ router.post("/contacts", async (req, res): Promise<void> => {
     `Reply via admin panel or call them directly.`,
   ];
   sendWhatsAppNotification(lines.join("\n")).catch(() => {});
+
+  sendContactNotification({
+    name: row.name,
+    phone: row.phone,
+    pickupLocation: row.pickupLocation,
+    message: row.message,
+  }).catch(() => {});
 });
 
 router.patch("/contacts/:id", async (req, res): Promise<void> => {
