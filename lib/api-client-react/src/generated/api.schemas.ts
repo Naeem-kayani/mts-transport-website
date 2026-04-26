@@ -18,6 +18,7 @@ export interface Route {
   timing: string;
   vehicle: string;
   category: string;
+  monthlyFare: number;
   createdAt: string;
 }
 
@@ -29,6 +30,7 @@ export interface CreateRouteBody {
   timing?: string;
   vehicle: string;
   category: string;
+  monthlyFare?: number;
 }
 
 export interface UpdateRouteBody {
@@ -39,6 +41,7 @@ export interface UpdateRouteBody {
   timing?: string;
   vehicle?: string;
   category?: string;
+  monthlyFare?: number;
 }
 
 export interface Message {

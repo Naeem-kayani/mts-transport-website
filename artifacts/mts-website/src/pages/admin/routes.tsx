@@ -55,6 +55,7 @@ type RouteForm = {
   timing: string;
   vehicle: string;
   category: "school" | "college" | "university";
+  monthlyFare: number;
 };
 
 const emptyForm: RouteForm = {
@@ -65,6 +66,7 @@ const emptyForm: RouteForm = {
   timing: "",
   vehicle: "",
   category: "school",
+  monthlyFare: 0,
 };
 
 export default function AdminRoutes() {
@@ -98,6 +100,7 @@ export default function AdminRoutes() {
       timing: route.timing,
       vehicle: route.vehicle,
       category: route.category as RouteForm["category"],
+      monthlyFare: route.monthlyFare ?? 0,
     });
     setIsModalOpen(true);
   };
@@ -183,13 +186,14 @@ export default function AdminRoutes() {
                   <TableHead>From &rarr; To</TableHead>
                   <TableHead>Vehicle</TableHead>
                   <TableHead>Timing</TableHead>
+                  <TableHead>Monthly Fare</TableHead>
                   <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {routes.map((route) => (
                   <TableRow key={route.id} className="hover:bg-gray-50">
-                    <TableCell className="font-medium max-w-[200px]">{route.title}</TableCell>
+                    <TableCell className="font-medium max-w-[180px]">{route.title}</TableCell>
                     <TableCell>
                       <span className={`capitalize text-xs font-medium px-2 py-1 rounded-full border ${categoryColors[route.category] ?? ""}`}>
                         {route.category}
@@ -202,6 +206,11 @@ export default function AdminRoutes() {
                     </TableCell>
                     <TableCell className="text-sm text-gray-600">{route.vehicle}</TableCell>
                     <TableCell className="text-sm text-gray-600">{route.timing}</TableCell>
+                    <TableCell className="text-sm font-medium">
+                      {route.monthlyFare && route.monthlyFare > 0
+                        ? <span className="text-green-700">Rs. {route.monthlyFare.toLocaleString()}</span>
+                        : <span className="text-gray-400 italic">Not set</span>}
+                    </TableCell>
                     <TableCell className="text-right">
                       <Button
                         variant="ghost"
@@ -224,7 +233,7 @@ export default function AdminRoutes() {
                 ))}
                 {routes.length === 0 && (
                   <TableRow>
-                    <TableCell colSpan={6} className="text-center py-12 text-gray-500">
+                    <TableCell colSpan={7} className="text-center py-12 text-gray-500">
                       No routes yet. Click "Add New Route" to create one.
                     </TableCell>
                   </TableRow>
@@ -301,13 +310,25 @@ export default function AdminRoutes() {
                   />
                 </div>
               </div>
-              <div className="space-y-1">
-                <Label>Timing</Label>
-                <Input
-                  placeholder="7:00 AM - 2:00 PM"
-                  value={form.timing}
-                  onChange={(e) => setForm({ ...form, timing: e.target.value })}
-                />
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-1">
+                  <Label>Timing</Label>
+                  <Input
+                    placeholder="7:00 AM - 2:00 PM"
+                    value={form.timing}
+                    onChange={(e) => setForm({ ...form, timing: e.target.value })}
+                  />
+                </div>
+                <div className="space-y-1">
+                  <Label>Monthly Fare (PKR)</Label>
+                  <Input
+                    type="number"
+                    min={0}
+                    placeholder="e.g. 4500"
+                    value={form.monthlyFare === 0 ? "" : form.monthlyFare}
+                    onChange={(e) => setForm({ ...form, monthlyFare: parseInt(e.target.value) || 0 })}
+                  />
+                </div>
               </div>
               <div className="flex gap-3 pt-2">
                 <Button

@@ -26,6 +26,7 @@ export const GetRoutesResponseItem = zod.object({
   timing: zod.string(),
   vehicle: zod.string(),
   category: zod.string(),
+  monthlyFare: zod.number(),
   createdAt: zod.string(),
 });
 export const GetRoutesResponse = zod.array(GetRoutesResponseItem);
@@ -41,6 +42,7 @@ export const CreateRouteBody = zod.object({
   timing: zod.string().optional(),
   vehicle: zod.string(),
   category: zod.string(),
+  monthlyFare: zod.number().optional(),
 });
 
 /**
@@ -58,6 +60,7 @@ export const UpdateRouteBody = zod.object({
   timing: zod.string().optional(),
   vehicle: zod.string().optional(),
   category: zod.string().optional(),
+  monthlyFare: zod.number().optional(),
 });
 
 export const UpdateRouteResponse = zod.object({
@@ -69,6 +72,7 @@ export const UpdateRouteResponse = zod.object({
   timing: zod.string(),
   vehicle: zod.string(),
   category: zod.string(),
+  monthlyFare: zod.number(),
   createdAt: zod.string(),
 });
 

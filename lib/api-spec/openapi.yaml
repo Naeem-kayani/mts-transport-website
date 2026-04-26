@@ -281,6 +281,8 @@ components:
           type: string
         category:
           type: string
+        monthlyFare:
+          type: integer
         createdAt:
           type: string
       required:
@@ -292,6 +294,7 @@ components:
         - timing
         - vehicle
         - category
+        - monthlyFare
         - createdAt
 
     CreateRouteBody:
@@ -311,6 +314,8 @@ components:
           type: string
         category:
           type: string
+        monthlyFare:
+          type: integer
       required:
         - title
         - fromLocation
@@ -335,6 +340,8 @@ components:
           type: string
         category:
           type: string
+        monthlyFare:
+          type: integer
 
     Message:
       type: object

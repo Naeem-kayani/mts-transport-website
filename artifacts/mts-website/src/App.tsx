@@ -14,6 +14,7 @@ import Routes from "@/pages/routes";
 import Fleet from "@/pages/fleet";
 import Contact from "@/pages/contact";
 import FAQs from "@/pages/faqs";
+import Quote from "@/pages/quote";
 
 // Admin Pages
 import AdminLogin from "@/pages/admin/login";
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/fleet" component={Fleet} />
       <Route path="/contact" component={Contact} />
       <Route path="/faqs" component={FAQs} />
+      <Route path="/quote" component={Quote} />
       
       <Route path="/admin/login" component={AdminLogin} />
       <Route path="/admin/dashboard" component={AdminDashboard} />
