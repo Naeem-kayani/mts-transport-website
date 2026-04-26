@@ -2,74 +2,13 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { MapPin, Clock, Car } from "lucide-react";
-
-const allRoutes = [
-  {
-    id: 1,
-    title: "Bahria Town to DHA Route",
-    from: "Bahria Town, Rawalpindi",
-    to: "DHA Phase, Islamabad",
-    covered: "DHA Schools, DHA Colleges",
-    timing: "7:00 AM - 2:00 PM",
-    vehicle: "Vans & Hiace",
-    category: "school"
-  },
-  {
-    id: 2,
-    title: "Gulrez to PWD Route",
-    from: "Gulrez, Rawalpindi",
-    to: "PWD Road, Rawalpindi",
-    covered: "Government Colleges",
-    timing: "8:00 AM - 3:00 PM",
-    vehicle: "Buses & Vans",
-    category: "college"
-  },
-  {
-    id: 3,
-    title: "Saddar to Rawalpindi Route",
-    from: "Saddar Bazaar, Rawalpindi",
-    to: "Rawalpindi City Center",
-    covered: "Private Colleges, Universities",
-    timing: "7:30 AM - 4:00 PM",
-    vehicle: "All Vehicles",
-    category: "university"
-  },
-  {
-    id: 4,
-    title: "Rawalpindi to Islamabad University Belt",
-    from: "Rawalpindi",
-    to: "H-9, Islamabad",
-    covered: "COMSATS, QAU, NUML",
-    timing: "7:00 AM - 5:00 PM",
-    vehicle: "Coaster Buses",
-    category: "university"
-  },
-  {
-    id: 5,
-    title: "Bahria Phase 8 School Route",
-    from: "Bahria Phase 8",
-    to: "Multiple Schools",
-    covered: "Beaconhouse, City School, Roots",
-    timing: "7:00 AM - 2:00 PM",
-    vehicle: "Vans",
-    category: "school"
-  },
-  {
-    id: 6,
-    title: "G-11 to Islamabad College Zone",
-    from: "G-11 Markaz",
-    to: "F-6, F-7 Islamabad",
-    covered: "Islamabad College, Federal College",
-    timing: "8:00 AM - 3:00 PM",
-    vehicle: "Hiace & Buses",
-    category: "college"
-  }
-];
+import { storage } from "@/lib/storage";
 
 export default function Routes() {
   const [filter, setFilter] = useState("all");
+  const [routes, setRoutes] = useState(() => storage.getRoutes());
 
-  const filteredRoutes = allRoutes.filter(route => 
+  const filteredRoutes = routes.filter(route =>
     filter === "all" ? true : route.category === filter
   );
 
@@ -84,7 +23,7 @@ export default function Routes() {
 
       <section className="py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          
+
           {/* Filters */}
           <div className="flex flex-wrap justify-center gap-4 mb-12">
             {[
@@ -97,8 +36,8 @@ export default function Routes() {
                 key={f.id}
                 onClick={() => setFilter(f.id)}
                 className={`px-6 py-2 rounded-full text-sm font-semibold transition-all ${
-                  filter === f.id 
-                    ? "bg-primary text-white shadow-md" 
+                  filter === f.id
+                    ? "bg-primary text-white shadow-md"
                     : "bg-white text-gray-600 hover:bg-gray-100 border border-gray-200"
                 }`}
               >
@@ -128,7 +67,7 @@ export default function Routes() {
                         {route.category}
                       </Badge>
                     </div>
-                    
+
                     <div className="space-y-4">
                       <div className="flex items-start gap-3">
                         <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
@@ -137,7 +76,7 @@ export default function Routes() {
                           <p className="text-sm text-gray-600">{route.from} &rarr; {route.to}</p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-start gap-3">
                         <MapPin className="w-5 h-5 text-primary mt-0.5" />
                         <div>
@@ -145,14 +84,14 @@ export default function Routes() {
                           <p className="text-sm text-gray-600">{route.covered}</p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-3">
                         <Clock className="w-5 h-5 text-gray-400" />
                         <div>
                           <p className="text-sm text-gray-600">{route.timing}</p>
                         </div>
                       </div>
-                      
+
                       <div className="flex items-center gap-3">
                         <Car className="w-5 h-5 text-gray-400" />
                         <div>
