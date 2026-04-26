@@ -230,6 +230,31 @@ export default function Contact() {
           </div>
         </div>
       </section>
+
+      {/* Google Maps Section */}
+      <section className="pb-16">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+            <div className="px-6 py-5 border-b border-gray-100 flex items-center gap-3">
+              <MapPin className="w-5 h-5 text-primary" />
+              <div>
+                <h3 className="font-bold text-gray-900">Find Our Office</h3>
+                <p className="text-sm text-gray-500">Plaza #30, Office #01, Linear Commercial Phase 8, Bahria Town, Rawalpindi</p>
+              </div>
+            </div>
+            <iframe
+              title="MTS Office Location"
+              src="https://www.google.com/maps?q=Linear+Commercial+Phase+8+Bahria+Town+Rawalpindi+Pakistan&output=embed"
+              width="100%"
+              height="400"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+            />
+          </div>
+        </div>
+      </section>
     </div>
   );
 }

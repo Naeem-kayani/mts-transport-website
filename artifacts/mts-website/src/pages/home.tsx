@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Shield, Clock, Armchair, BadgeDollarSign } from "lucide-react";
+import { Shield, Clock, Armchair, BadgeDollarSign, Star, Quote } from "lucide-react";
 import { Link } from "wouter";
 import { Button } from "@/components/ui/button";
 
@@ -23,6 +23,33 @@ const features = [
     icon: BadgeDollarSign,
     title: "Affordable Pricing",
     description: "Competitive rates for all budget ranges",
+  },
+];
+
+const testimonials = [
+  {
+    name: "Mrs. Sana Malik",
+    role: "Parent — Beaconhouse Student",
+    text: "MTS has been taking my daughter to school for 2 years. The driver is always on time and very professional. I feel completely safe knowing she is in good hands.",
+    rating: 5,
+  },
+  {
+    name: "Mr. Tariq Hussain",
+    role: "Parent — FAST University Student",
+    text: "Excellent service! My son uses MTS daily for his university commute. The AC vehicle, GPS tracking, and reliable timing have made our lives so much easier.",
+    rating: 5,
+  },
+  {
+    name: "Mrs. Ayesha Baig",
+    role: "Parent — Army Public School Student",
+    text: "I have tried other services before but MTS is simply the best in Rawalpindi. Very affordable and the staff is always helpful on the phone.",
+    rating: 5,
+  },
+  {
+    name: "Mr. Imran Qureshi",
+    role: "Parent — COMSATS University Student",
+    text: "Punctual, safe, and great value for money. Abdul Rehman Sahab and his team are truly dedicated. Highly recommended for university transport.",
+    rating: 5,
   },
 ];
 
@@ -125,6 +152,56 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Testimonials Section */}
+      <section className="py-20 bg-gray-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-14">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">What Parents Say</h2>
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Hundreds of families in Rawalpindi and Islamabad trust MTS every day for their children's safe transport.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {testimonials.map((t, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 relative"
+              >
+                <Quote className="w-8 h-8 text-red-100 absolute top-6 right-6" />
+                <div className="flex gap-1 mb-4">
+                  {Array.from({ length: t.rating }).map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-gray-700 leading-relaxed mb-6 italic">"{t.text}"</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-sm">
+                    {t.name.split(" ").map(n => n[0]).join("").slice(0, 2)}
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900 text-sm">{t.name}</p>
+                    <p className="text-gray-500 text-xs">{t.role}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link href="/contact">
+              <Button size="lg" className="px-8">
+                Join Hundreds of Happy Families
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -156,7 +233,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-gray-800 pt-8 text-center text-gray-500">
-            <p>&copy; 2024 MTS - Mani Transport Service. All rights reserved.</p>
+            <p>&copy; 2025 MTS - Mani Transport Service. All rights reserved.</p>
           </div>
         </div>
       </footer>
