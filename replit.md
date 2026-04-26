@@ -33,7 +33,15 @@ See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and pa
 - **Preview Path**: `/`
 - **Description**: Full 7-page transport booking website for MTS (Mani Transport Service) in Rawalpindi, Pakistan
 - **Pages**: Home, About, Services, Routes, Fleet, Contact, FAQ
-- **Admin**: Basic admin section at `/admin/login` (credentials: admin@mts-transport.com / admin123)
+- **Admin**: Admin panel at `/admin/login` (credentials: admin@mts-transport.com / admin123)
 - **Features**: Sticky navbar, floating WhatsApp button, floating Send Message button, framer-motion animations, filterable routes, fleet carousel, FAQ accordions, contact form
 - **Color Scheme**: Crimson Red (#DC143C) primary, white backgrounds, Poppins font
-- **No backend** — pure frontend, all data is hardcoded/local state
+- **Backend**: Real database connected — routes/messages/contacts stored in PostgreSQL
+- **API**: REST API at `/api` (Express server) with full CRUD for routes, messages, contacts
+- **Frontend uses**: `@workspace/api-client-react` generated React Query hooks for all data operations
+
+### API Server (`artifacts/api-server`)
+- **Type**: Express 5 REST API
+- **Port**: 8080 (proxied at `/api`)
+- **Routes**: `/api/routes`, `/api/messages`, `/api/contacts` with full CRUD
+- **Database tables**: `routes`, `messages`, `contacts` (PostgreSQL via Drizzle ORM)

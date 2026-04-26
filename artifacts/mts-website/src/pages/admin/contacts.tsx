@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/layout/AuthGuard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { Users, Eye, Trash2, CheckCircle } from "lucide-react";
+import { Users, Eye, Trash2, CheckCircle, Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -28,37 +29,61 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { storage, type ContactRequest } from "@/lib/storage";
+import {
+  useGetContacts,
+  useUpdateContact,
+  useDeleteContact,
+  getGetContactsQueryKey,
+} from "@workspace/api-client-react";
+import type { ContactRequest } from "@workspace/api-client-react";
 
 type Filter = "all" | "new" | "replied";
 
 export default function AdminContacts() {
-  const [contacts, setContacts] = useState<ContactRequest[]>(storage.getContacts());
+  const queryClient = useQueryClient();
+  const { data: contacts = [], isLoading } = useGetContacts();
+  const updateContact = useUpdateContact();
+  const deleteContact = useDeleteContact();
+
   const [filter, setFilter] = useState<Filter>("all");
   const [viewContact, setViewContact] = useState<ContactRequest | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const { toast } = useToast();
 
-  const refresh = () => setContacts(storage.getContacts());
+  const refresh = () => queryClient.invalidateQueries({ queryKey: getGetContactsQueryKey() });
 
   const filtered = contacts.filter((c) =>
     filter === "all" ? true : c.status === filter
   );
 
   const handleMarkReplied = (id: number) => {
-    storage.updateContactStatus(id, "replied");
-    refresh();
-    if (viewContact?.id === id) setViewContact({ ...viewContact, status: "replied" });
-    toast({ title: "Marked as replied." });
+    updateContact.mutate(
+      { id, data: { status: "replied" } },
+      {
+        onSuccess: (updated) => {
+          refresh();
+          if (viewContact?.id === id) setViewContact({ ...viewContact, status: updated.status });
+          toast({ title: "Marked as replied." });
+        },
+        onError: () => toast({ title: "Failed to update.", variant: "destructive" }),
+      }
+    );
   };
 
   const handleDelete = () => {
     if (deleteId !== null) {
-      storage.deleteContact(deleteId);
-      refresh();
-      setDeleteId(null);
-      if (viewContact?.id === deleteId) setViewContact(null);
-      toast({ title: "Contact request deleted." });
+      deleteContact.mutate(
+        { id: deleteId },
+        {
+          onSuccess: () => {
+            refresh();
+            if (viewContact?.id === deleteId) setViewContact(null);
+            setDeleteId(null);
+            toast({ title: "Contact request deleted." });
+          },
+          onError: () => toast({ title: "Failed to delete.", variant: "destructive" }),
+        }
+      );
     }
   };
 
@@ -90,14 +115,17 @@ export default function AdminContacts() {
                   ? "bg-primary text-white"
                   : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
               }`}
-              data-testid={`filter-contacts-${f}`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)} ({counts[f]})
             </button>
           ))}
         </div>
 
-        {filtered.length === 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center flex flex-col items-center">
             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-4">
               <Users className="w-8 h-8" />
@@ -144,7 +172,6 @@ export default function AdminContacts() {
                         size="icon"
                         className="text-blue-600 hover:bg-blue-50"
                         onClick={() => setViewContact(contact)}
-                        data-testid={`view-contact-${contact.id}`}
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
@@ -154,7 +181,6 @@ export default function AdminContacts() {
                           size="icon"
                           className="text-green-600 hover:bg-green-50"
                           onClick={() => handleMarkReplied(contact.id)}
-                          data-testid={`reply-contact-${contact.id}`}
                         >
                           <CheckCircle className="w-4 h-4" />
                         </Button>
@@ -164,7 +190,6 @@ export default function AdminContacts() {
                         size="icon"
                         className="text-red-600 hover:bg-red-50"
                         onClick={() => setDeleteId(contact.id)}
-                        data-testid={`delete-contact-${contact.id}`}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

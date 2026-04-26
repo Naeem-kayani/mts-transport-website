@@ -3,9 +3,8 @@ import { PhoneCall, MapPin, Mail, MessageCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
-import { storage } from "@/lib/storage";
+import { useCreateContact } from "@workspace/api-client-react";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -26,8 +25,8 @@ const formSchema = z.object({
 });
 
 export default function Contact() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const { toast } = useToast();
+  const createContact = useCreateContact();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -40,21 +39,32 @@ export default function Contact() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsSubmitting(true);
-    setTimeout(() => {
-      storage.addContact({
-        name: values.name,
-        phone: values.phone,
-        pickupLocation: values.pickupLocation || "",
-        message: values.message || "",
-      });
-      setIsSubmitting(false);
-      toast({
-        title: "Message Sent Successfully!",
-        description: "Thank you! We will contact you shortly.",
-      });
-      form.reset();
-    }, 1500);
+    createContact.mutate(
+      {
+        data: {
+          name: values.name,
+          phone: values.phone,
+          pickupLocation: values.pickupLocation || "",
+          message: values.message || "",
+        },
+      },
+      {
+        onSuccess: () => {
+          toast({
+            title: "Message Sent Successfully!",
+            description: "Thank you! We will contact you shortly.",
+          });
+          form.reset();
+        },
+        onError: () => {
+          toast({
+            title: "Failed to send message.",
+            description: "Please try again or contact us directly.",
+            variant: "destructive",
+          });
+        },
+      }
+    );
   }
 
   return (
@@ -135,8 +145,8 @@ export default function Contact() {
                       </FormItem>
                     )}
                   />
-                  <Button type="submit" className="w-full text-lg h-12" disabled={isSubmitting}>
-                    {isSubmitting ? "Sending..." : "Send Message"}
+                  <Button type="submit" className="w-full text-lg h-12" disabled={createContact.isPending}>
+                    {createContact.isPending ? "Sending..." : "Send Message"}
                   </Button>
                 </form>
               </Form>

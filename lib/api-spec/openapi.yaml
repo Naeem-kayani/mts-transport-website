@@ -1,22 +1,27 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: MTS Transport Service API
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: routes
+    description: Transport route operations
+  - name: messages
+    description: Customer message operations
+  - name: contacts
+    description: Contact request operations
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +29,229 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /routes:
+    get:
+      operationId: getRoutes
+      tags: [routes]
+      summary: List all routes
+      responses:
+        "200":
+          description: List of routes
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Route"
+    post:
+      operationId: createRoute
+      tags: [routes]
+      summary: Create a route
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateRouteBody"
+      responses:
+        "201":
+          description: Created route
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Route"
+
+  /routes/{id}:
+    patch:
+      operationId: updateRoute
+      tags: [routes]
+      summary: Update a route
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateRouteBody"
+      responses:
+        "200":
+          description: Updated route
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Route"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteRoute
+      tags: [routes]
+      summary: Delete a route
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /messages:
+    get:
+      operationId: getMessages
+      tags: [messages]
+      summary: List all messages
+      responses:
+        "200":
+          description: List of messages
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Message"
+    post:
+      operationId: createMessage
+      tags: [messages]
+      summary: Create a message
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateMessageBody"
+      responses:
+        "201":
+          description: Created message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+
+  /messages/{id}:
+    patch:
+      operationId: updateMessage
+      tags: [messages]
+      summary: Update message status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateMessageBody"
+      responses:
+        "200":
+          description: Updated message
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Message"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteMessage
+      tags: [messages]
+      summary: Delete a message
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
+  /contacts:
+    get:
+      operationId: getContacts
+      tags: [contacts]
+      summary: List all contact requests
+      responses:
+        "200":
+          description: List of contact requests
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactRequest"
+    post:
+      operationId: createContact
+      tags: [contacts]
+      summary: Submit a contact request
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateContactBody"
+      responses:
+        "201":
+          description: Created contact request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactRequest"
+
+  /contacts/{id}:
+    patch:
+      operationId: updateContact
+      tags: [contacts]
+      summary: Update contact request status
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateContactBody"
+      responses:
+        "200":
+          description: Updated contact request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactRequest"
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteContact
+      tags: [contacts]
+      summary: Delete a contact request
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+        "404":
+          description: Not found
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +262,170 @@ components:
       required:
         - status
 
+    Route:
+      type: object
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        fromLocation:
+          type: string
+        toLocation:
+          type: string
+        covered:
+          type: string
+        timing:
+          type: string
+        vehicle:
+          type: string
+        category:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - title
+        - fromLocation
+        - toLocation
+        - covered
+        - timing
+        - vehicle
+        - category
+        - createdAt
+
+    CreateRouteBody:
+      type: object
+      properties:
+        title:
+          type: string
+        fromLocation:
+          type: string
+        toLocation:
+          type: string
+        covered:
+          type: string
+        timing:
+          type: string
+        vehicle:
+          type: string
+        category:
+          type: string
+      required:
+        - title
+        - fromLocation
+        - toLocation
+        - vehicle
+        - category
+
+    UpdateRouteBody:
+      type: object
+      properties:
+        title:
+          type: string
+        fromLocation:
+          type: string
+        toLocation:
+          type: string
+        covered:
+          type: string
+        timing:
+          type: string
+        vehicle:
+          type: string
+        category:
+          type: string
+
+    Message:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - message
+        - status
+        - createdAt
+
+    CreateMessageBody:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        message:
+          type: string
+      required:
+        - name
+        - phone
+        - message
+
+    UpdateMessageBody:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    ContactRequest:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        phone:
+          type: string
+        pickupLocation:
+          type: string
+        message:
+          type: string
+        status:
+          type: string
+        createdAt:
+          type: string
+      required:
+        - id
+        - name
+        - phone
+        - pickupLocation
+        - message
+        - status
+        - createdAt
+
+    CreateContactBody:
+      type: object
+      properties:
+        name:
+          type: string
+        phone:
+          type: string
+        pickupLocation:
+          type: string
+        message:
+          type: string
+      required:
+        - name
+        - phone
+
+    UpdateContactBody:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status

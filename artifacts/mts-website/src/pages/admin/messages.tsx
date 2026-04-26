@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/layout/AuthGuard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
-import { MessageSquare, Eye, Trash2, CheckCircle } from "lucide-react";
+import { MessageSquare, Eye, Trash2, CheckCircle, Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -28,37 +29,61 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { storage, type Message } from "@/lib/storage";
+import {
+  useGetMessages,
+  useUpdateMessage,
+  useDeleteMessage,
+  getGetMessagesQueryKey,
+} from "@workspace/api-client-react";
+import type { Message } from "@workspace/api-client-react";
 
 type Filter = "all" | "unresolved" | "resolved";
 
 export default function AdminMessages() {
-  const [messages, setMessages] = useState<Message[]>(storage.getMessages());
+  const queryClient = useQueryClient();
+  const { data: messages = [], isLoading } = useGetMessages();
+  const updateMessage = useUpdateMessage();
+  const deleteMessage = useDeleteMessage();
+
   const [filter, setFilter] = useState<Filter>("all");
   const [viewMessage, setViewMessage] = useState<Message | null>(null);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const { toast } = useToast();
 
-  const refresh = () => setMessages(storage.getMessages());
+  const refresh = () => queryClient.invalidateQueries({ queryKey: getGetMessagesQueryKey() });
 
   const filtered = messages.filter((m) =>
     filter === "all" ? true : m.status === filter
   );
 
   const handleMarkResolved = (id: number) => {
-    storage.updateMessageStatus(id, "resolved");
-    refresh();
-    if (viewMessage?.id === id) setViewMessage({ ...viewMessage, status: "resolved" });
-    toast({ title: "Marked as resolved." });
+    updateMessage.mutate(
+      { id, data: { status: "resolved" } },
+      {
+        onSuccess: (updated) => {
+          refresh();
+          if (viewMessage?.id === id) setViewMessage({ ...viewMessage, status: updated.status });
+          toast({ title: "Marked as resolved." });
+        },
+        onError: () => toast({ title: "Failed to update.", variant: "destructive" }),
+      }
+    );
   };
 
   const handleDelete = () => {
     if (deleteId !== null) {
-      storage.deleteMessage(deleteId);
-      refresh();
-      setDeleteId(null);
-      if (viewMessage?.id === deleteId) setViewMessage(null);
-      toast({ title: "Message deleted." });
+      deleteMessage.mutate(
+        { id: deleteId },
+        {
+          onSuccess: () => {
+            refresh();
+            if (viewMessage?.id === deleteId) setViewMessage(null);
+            setDeleteId(null);
+            toast({ title: "Message deleted." });
+          },
+          onError: () => toast({ title: "Failed to delete.", variant: "destructive" }),
+        }
+      );
     }
   };
 
@@ -90,14 +115,17 @@ export default function AdminMessages() {
                   ? "bg-primary text-white"
                   : "bg-white border border-gray-200 text-gray-600 hover:bg-gray-50"
               }`}
-              data-testid={`filter-messages-${f}`}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)} ({counts[f]})
             </button>
           ))}
         </div>
 
-        {filtered.length === 0 ? (
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : filtered.length === 0 ? (
           <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center flex flex-col items-center">
             <div className="w-16 h-16 bg-gray-50 rounded-full flex items-center justify-center text-gray-400 mb-4">
               <MessageSquare className="w-8 h-8" />
@@ -142,7 +170,6 @@ export default function AdminMessages() {
                         size="icon"
                         className="text-blue-600 hover:bg-blue-50"
                         onClick={() => setViewMessage(msg)}
-                        data-testid={`view-message-${msg.id}`}
                       >
                         <Eye className="w-4 h-4" />
                       </Button>
@@ -152,7 +179,6 @@ export default function AdminMessages() {
                           size="icon"
                           className="text-green-600 hover:bg-green-50"
                           onClick={() => handleMarkResolved(msg.id)}
-                          data-testid={`resolve-message-${msg.id}`}
                         >
                           <CheckCircle className="w-4 h-4" />
                         </Button>
@@ -162,7 +188,6 @@ export default function AdminMessages() {
                         size="icon"
                         className="text-red-600 hover:bg-red-50"
                         onClick={() => setDeleteId(msg.id)}
-                        data-testid={`delete-message-${msg.id}`}
                       >
                         <Trash2 className="w-4 h-4" />
                       </Button>

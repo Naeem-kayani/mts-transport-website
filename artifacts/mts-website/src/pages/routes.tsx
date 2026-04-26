@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
-import { MapPin, Clock, Car } from "lucide-react";
-import { storage } from "@/lib/storage";
+import { MapPin, Clock, Car, Loader2 } from "lucide-react";
+import { useGetRoutes } from "@workspace/api-client-react";
 
 export default function Routes() {
   const [filter, setFilter] = useState("all");
-  const [routes, setRoutes] = useState(() => storage.getRoutes());
+  const { data: routes = [], isLoading } = useGetRoutes();
 
   const filteredRoutes = routes.filter(route =>
     filter === "all" ? true : route.category === filter
@@ -46,8 +46,12 @@ export default function Routes() {
             ))}
           </div>
 
-          {/* Routes Grid */}
-          {filteredRoutes.length > 0 ? (
+          {/* Loading state */}
+          {isLoading ? (
+            <div className="flex justify-center items-center py-20">
+              <Loader2 className="w-8 h-8 animate-spin text-primary" />
+            </div>
+          ) : filteredRoutes.length > 0 ? (
             <motion.div layout className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <AnimatePresence>
                 {filteredRoutes.map((route) => (
@@ -73,7 +77,7 @@ export default function Routes() {
                         <MapPin className="w-5 h-5 text-gray-400 mt-0.5" />
                         <div>
                           <p className="text-sm font-medium text-gray-900">Route Path</p>
-                          <p className="text-sm text-gray-600">{route.from} &rarr; {route.to}</p>
+                          <p className="text-sm text-gray-600">{route.fromLocation} &rarr; {route.toLocation}</p>
                         </div>
                       </div>
 

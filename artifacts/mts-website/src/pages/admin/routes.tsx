@@ -1,10 +1,11 @@
 import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { AuthGuard } from "@/components/layout/AuthGuard";
 import { AdminLayout } from "@/components/layout/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Plus, Edit2, Trash2, X } from "lucide-react";
+import { Plus, Edit2, Trash2, Loader2 } from "lucide-react";
 import {
   Table,
   TableBody,
@@ -13,7 +14,6 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -38,12 +38,19 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/hooks/use-toast";
-import { storage, type Route } from "@/lib/storage";
+import {
+  useGetRoutes,
+  useCreateRoute,
+  useUpdateRoute,
+  useDeleteRoute,
+  getGetRoutesQueryKey,
+} from "@workspace/api-client-react";
+import type { Route } from "@workspace/api-client-react";
 
 type RouteForm = {
   title: string;
-  from: string;
-  to: string;
+  fromLocation: string;
+  toLocation: string;
   covered: string;
   timing: string;
   vehicle: string;
@@ -52,8 +59,8 @@ type RouteForm = {
 
 const emptyForm: RouteForm = {
   title: "",
-  from: "",
-  to: "",
+  fromLocation: "",
+  toLocation: "",
   covered: "",
   timing: "",
   vehicle: "",
@@ -61,14 +68,19 @@ const emptyForm: RouteForm = {
 };
 
 export default function AdminRoutes() {
-  const [routes, setRoutes] = useState<Route[]>(storage.getRoutes());
+  const queryClient = useQueryClient();
+  const { data: routes = [], isLoading } = useGetRoutes();
+  const createRoute = useCreateRoute();
+  const updateRoute = useUpdateRoute();
+  const deleteRoute = useDeleteRoute();
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingRoute, setEditingRoute] = useState<Route | null>(null);
   const [form, setForm] = useState<RouteForm>(emptyForm);
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const { toast } = useToast();
 
-  const refresh = () => setRoutes(storage.getRoutes());
+  const refresh = () => queryClient.invalidateQueries({ queryKey: getGetRoutesQueryKey() });
 
   const openAdd = () => {
     setEditingRoute(null);
@@ -80,38 +92,61 @@ export default function AdminRoutes() {
     setEditingRoute(route);
     setForm({
       title: route.title,
-      from: route.from,
-      to: route.to,
+      fromLocation: route.fromLocation,
+      toLocation: route.toLocation,
       covered: route.covered,
       timing: route.timing,
       vehicle: route.vehicle,
-      category: route.category,
+      category: route.category as RouteForm["category"],
     });
     setIsModalOpen(true);
   };
 
   const handleSave = () => {
-    if (!form.title.trim() || !form.from.trim() || !form.to.trim() || !form.vehicle.trim()) {
+    if (!form.title.trim() || !form.fromLocation.trim() || !form.toLocation.trim() || !form.vehicle.trim()) {
       toast({ title: "Please fill in all required fields.", variant: "destructive" });
       return;
     }
     if (editingRoute) {
-      storage.updateRoute(editingRoute.id, form);
-      toast({ title: "Route updated successfully!" });
+      updateRoute.mutate(
+        { id: editingRoute.id, data: form },
+        {
+          onSuccess: () => {
+            refresh();
+            setIsModalOpen(false);
+            toast({ title: "Route updated successfully!" });
+          },
+          onError: () => toast({ title: "Failed to update route.", variant: "destructive" }),
+        }
+      );
     } else {
-      storage.addRoute(form);
-      toast({ title: "Route added successfully!" });
+      createRoute.mutate(
+        { data: form },
+        {
+          onSuccess: () => {
+            refresh();
+            setIsModalOpen(false);
+            toast({ title: "Route added successfully!" });
+          },
+          onError: () => toast({ title: "Failed to add route.", variant: "destructive" }),
+        }
+      );
     }
-    refresh();
-    setIsModalOpen(false);
   };
 
   const handleDelete = () => {
     if (deleteId !== null) {
-      storage.deleteRoute(deleteId);
-      refresh();
-      setDeleteId(null);
-      toast({ title: "Route deleted." });
+      deleteRoute.mutate(
+        { id: deleteId },
+        {
+          onSuccess: () => {
+            refresh();
+            setDeleteId(null);
+            toast({ title: "Route deleted." });
+          },
+          onError: () => toast({ title: "Failed to delete route.", variant: "destructive" }),
+        }
+      );
     }
   };
 
@@ -134,66 +169,70 @@ export default function AdminRoutes() {
           </Button>
         </div>
 
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="bg-gray-50">
-                <TableHead>Route Title</TableHead>
-                <TableHead>Category</TableHead>
-                <TableHead>From → To</TableHead>
-                <TableHead>Vehicle</TableHead>
-                <TableHead>Timing</TableHead>
-                <TableHead className="text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {routes.map((route) => (
-                <TableRow key={route.id} className="hover:bg-gray-50">
-                  <TableCell className="font-medium max-w-[200px]">{route.title}</TableCell>
-                  <TableCell>
-                    <span className={`capitalize text-xs font-medium px-2 py-1 rounded-full border ${categoryColors[route.category]}`}>
-                      {route.category}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-sm">
-                    <span className="text-gray-800">{route.from}</span>
-                    <br />
-                    <span className="text-gray-400">→ {route.to}</span>
-                  </TableCell>
-                  <TableCell className="text-sm text-gray-600">{route.vehicle}</TableCell>
-                  <TableCell className="text-sm text-gray-600">{route.timing}</TableCell>
-                  <TableCell className="text-right">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
-                      onClick={() => openEdit(route)}
-                      data-testid={`edit-route-${route.id}`}
-                    >
-                      <Edit2 className="w-4 h-4" />
-                    </Button>
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      className="text-red-600 hover:text-red-700 hover:bg-red-50"
-                      onClick={() => setDeleteId(route.id)}
-                      data-testid={`delete-route-${route.id}`}
-                    >
-                      <Trash2 className="w-4 h-4" />
-                    </Button>
-                  </TableCell>
+        {isLoading ? (
+          <div className="flex justify-center py-20">
+            <Loader2 className="w-8 h-8 animate-spin text-primary" />
+          </div>
+        ) : (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+            <Table>
+              <TableHeader>
+                <TableRow className="bg-gray-50">
+                  <TableHead>Route Title</TableHead>
+                  <TableHead>Category</TableHead>
+                  <TableHead>From &rarr; To</TableHead>
+                  <TableHead>Vehicle</TableHead>
+                  <TableHead>Timing</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
                 </TableRow>
-              ))}
-              {routes.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center py-12 text-gray-500">
-                    No routes yet. Click "Add New Route" to create one.
-                  </TableCell>
-                </TableRow>
-              )}
-            </TableBody>
-          </Table>
-        </div>
+              </TableHeader>
+              <TableBody>
+                {routes.map((route) => (
+                  <TableRow key={route.id} className="hover:bg-gray-50">
+                    <TableCell className="font-medium max-w-[200px]">{route.title}</TableCell>
+                    <TableCell>
+                      <span className={`capitalize text-xs font-medium px-2 py-1 rounded-full border ${categoryColors[route.category] ?? ""}`}>
+                        {route.category}
+                      </span>
+                    </TableCell>
+                    <TableCell className="text-sm">
+                      <span className="text-gray-800">{route.fromLocation}</span>
+                      <br />
+                      <span className="text-gray-400">&rarr; {route.toLocation}</span>
+                    </TableCell>
+                    <TableCell className="text-sm text-gray-600">{route.vehicle}</TableCell>
+                    <TableCell className="text-sm text-gray-600">{route.timing}</TableCell>
+                    <TableCell className="text-right">
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        onClick={() => openEdit(route)}
+                      >
+                        <Edit2 className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        onClick={() => setDeleteId(route.id)}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+                {routes.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center py-12 text-gray-500">
+                      No routes yet. Click "Add New Route" to create one.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        )}
 
         {/* Add / Edit Modal */}
         <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
@@ -208,7 +247,6 @@ export default function AdminRoutes() {
                   placeholder="e.g. Bahria Town → DHA Route"
                   value={form.title}
                   onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  data-testid="input-route-title"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -216,18 +254,16 @@ export default function AdminRoutes() {
                   <Label>From (Starting Point) *</Label>
                   <Input
                     placeholder="Bahria Town, Rawalpindi"
-                    value={form.from}
-                    onChange={(e) => setForm({ ...form, from: e.target.value })}
-                    data-testid="input-route-from"
+                    value={form.fromLocation}
+                    onChange={(e) => setForm({ ...form, fromLocation: e.target.value })}
                   />
                 </div>
                 <div className="space-y-1">
                   <Label>To (Destination) *</Label>
                   <Input
                     placeholder="DHA Phase, Islamabad"
-                    value={form.to}
-                    onChange={(e) => setForm({ ...form, to: e.target.value })}
-                    data-testid="input-route-to"
+                    value={form.toLocation}
+                    onChange={(e) => setForm({ ...form, toLocation: e.target.value })}
                   />
                 </div>
               </div>
@@ -237,7 +273,6 @@ export default function AdminRoutes() {
                   placeholder="School A, College B, University C"
                   value={form.covered}
                   onChange={(e) => setForm({ ...form, covered: e.target.value })}
-                  data-testid="input-route-covered"
                 />
               </div>
               <div className="grid grid-cols-2 gap-4">
@@ -247,7 +282,7 @@ export default function AdminRoutes() {
                     value={form.category}
                     onValueChange={(v) => setForm({ ...form, category: v as RouteForm["category"] })}
                   >
-                    <SelectTrigger data-testid="select-route-category">
+                    <SelectTrigger>
                       <SelectValue placeholder="Select category" />
                     </SelectTrigger>
                     <SelectContent>
@@ -263,7 +298,6 @@ export default function AdminRoutes() {
                     placeholder="Vans & Hiace"
                     value={form.vehicle}
                     onChange={(e) => setForm({ ...form, vehicle: e.target.value })}
-                    data-testid="input-route-vehicle"
                   />
                 </div>
               </div>
@@ -273,12 +307,15 @@ export default function AdminRoutes() {
                   placeholder="7:00 AM - 2:00 PM"
                   value={form.timing}
                   onChange={(e) => setForm({ ...form, timing: e.target.value })}
-                  data-testid="input-route-timing"
                 />
               </div>
               <div className="flex gap-3 pt-2">
-                <Button onClick={handleSave} className="flex-1" data-testid="button-save-route">
-                  {editingRoute ? "Save Changes" : "Add Route"}
+                <Button
+                  onClick={handleSave}
+                  className="flex-1"
+                  disabled={createRoute.isPending || updateRoute.isPending}
+                >
+                  {createRoute.isPending || updateRoute.isPending ? "Saving..." : editingRoute ? "Save Changes" : "Add Route"}
                 </Button>
                 <Button variant="outline" onClick={() => setIsModalOpen(false)} className="flex-1">
                   Cancel
@@ -302,7 +339,7 @@ export default function AdminRoutes() {
               <AlertDialogAction
                 className="bg-red-600 hover:bg-red-700"
                 onClick={handleDelete}
-                data-testid="button-confirm-delete"
+                disabled={deleteRoute.isPending}
               >
                 Delete
               </AlertDialogAction>
