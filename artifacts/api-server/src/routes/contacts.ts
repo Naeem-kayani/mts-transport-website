@@ -7,6 +7,7 @@ import {
   UpdateContactParams,
   DeleteContactParams,
 } from "@workspace/api-zod";
+import { sendWhatsAppNotification } from "../lib/whatsapp";
 
 const router: IRouter = Router();
 
@@ -28,7 +29,20 @@ router.post("/contacts", async (req, res): Promise<void> => {
     message: parsed.data.message ?? "",
     status: "new",
   }).returning();
+
   res.status(201).json(row);
+
+  const lines = [
+    `🚌 *New MTS Contact Request*`,
+    ``,
+    `👤 *Name:* ${row.name}`,
+    `📞 *Phone:* ${row.phone}`,
+    ...(row.pickupLocation ? [`📍 *Pickup:* ${row.pickupLocation}`] : []),
+    ...(row.message ? [`💬 *Message:* ${row.message}`] : []),
+    ``,
+    `Reply via admin panel or call them directly.`,
+  ];
+  sendWhatsAppNotification(lines.join("\n")).catch(() => {});
 });
 
 router.patch("/contacts/:id", async (req, res): Promise<void> => {
