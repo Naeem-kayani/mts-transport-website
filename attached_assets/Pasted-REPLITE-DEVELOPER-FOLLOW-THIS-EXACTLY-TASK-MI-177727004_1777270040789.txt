@@ -1,0 +1,345 @@
+REPLITE DEVELOPER - FOLLOW THIS EXACTLY
+
+===============================================
+TASK: MIGRATE MTS WEBSITE FROM REPLIT TO VERCEL + GOOGLE RANKING (FREE)
+===============================================
+
+WHAT TO DO:
+
+1. Add 4 Files to Project (10 minutes)
+2. Push to GitHub (10 minutes)
+3. Deploy on Vercel (10 minutes)
+4. Setup Google (15 minutes)
+
+TOTAL TIME: 45 minutes
+COST: $0 (completely free)
+RESULT: Website live at mts-transport.vercel.app with Google ranking
+
+===============================================
+STEP 1: ADD THESE 4 FILES TO YOUR PROJECT
+===============================================
+
+FILE A) Create: public/sitemap.xml
+--------
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://mts-transport.vercel.app/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://mts-transport.vercel.app/about</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mts-transport.vercel.app/services</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mts-transport.vercel.app/routes</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>
+  <url><loc>https://mts-transport.vercel.app/fleet</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mts-transport.vercel.app/contact</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://mts-transport.vercel.app/faq</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>
+--------
+
+FILE B) Create: public/robots.txt
+--------
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin/login
+Disallow: /admin/dashboard
+
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+
+Sitemap: https://mts-transport.vercel.app/sitemap.xml
+--------
+
+FILE C) Create: vercel.json (in project root - same level as package.json)
+--------
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "build",
+  "framework": "react",
+  "rewrites": [
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600"
+        },
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        }
+      ]
+    }
+  ]
+}
+--------
+
+FILE D) UPDATE: public/index.html
+Replace the <head> section with this:
+
+--------
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#DC143C" />
+    
+    <title>MTS Pick & Drop Service | Transport Service in Rawalpindi & Islamabad</title>
+    <meta name="title" content="MTS Pick & Drop Service | Transport Service in Rawalpindi & Islamabad">
+    <meta name="description" content="MTS Mani Transport Service provides reliable school, college, and university pick and drop service in Rawalpindi and Islamabad. Professional drivers, GPS tracking, affordable rates. Call 0310-5605600.">
+    <meta name="keywords" content="pick and drop service rawalpindi, transport service islamabad, school transport, college transport, university pick and drop, MTS transport, mani transport service">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://mts-transport.vercel.app/">
+    
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://mts-transport.vercel.app/">
+    <meta property="og:title" content="MTS Pick & Drop Service | Transport Service in Rawalpindi & Islamabad">
+    <meta property="og:description" content="Reliable pick and drop service for schools, colleges, and universities in Rawalpindi and Islamabad.">
+    <meta property="og:image" content="https://mts-transport.vercel.app/og-image.png">
+    <meta property="og:site_name" content="MTS Mani Transport Service">
+    
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="MTS Pick & Drop Service">
+    <meta property="twitter:description" content="Reliable pick and drop service for schools, colleges, and universities">
+    <meta property="twitter:image" content="https://mts-transport.vercel.app/og-image.png">
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXX');
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "MTS - Mani Transport Service",
+      "description": "Pick and drop service for schools, colleges, universities in Rawalpindi",
+      "telephone": "+923105605600",
+      "email": "malikmanii34567@gmail.com",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Plaza #30, Office #01, Ground Floor, Linear Commercial Phase 8",
+        "addressLocality": "Bahria Town",
+        "addressRegion": "Rawalpindi",
+        "addressCountry": "PK"
+      },
+      "areaServed": ["Rawalpindi", "Islamabad"],
+      "url": "https://mts-transport.vercel.app",
+      "priceRange": "₨₨₨"
+    }
+    </script>
+    
+    <link rel="icon" type="image/x-icon" href="%PUBLIC_URL%/favicon.ico">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+--------
+
+===============================================
+STEP 2: PUSH TO GITHUB (10 MINUTES)
+===============================================
+
+If you don't have GitHub:
+1. Go to github.com
+2. Sign up (free)
+3. Create new repository "mts-transport"
+
+Then run these commands:
+
+git add .
+git commit -m "Add SEO and vercel config"
+git push origin main
+
+Wait for code to be on GitHub.
+
+===============================================
+STEP 3: DEPLOY ON VERCEL (10 MINUTES)
+===============================================
+
+1. Go to vercel.com
+2. Click "Sign up"
+3. Click "Continue with GitHub"
+4. Authorize Vercel
+5. Click "New Project"
+6. Select "mts-transport" repository
+7. Framework: React (auto-detected)
+8. Click "Deploy"
+9. Wait 2-3 minutes
+
+YOUR WEBSITE IS NOW LIVE AT: https://mts-transport.vercel.app
+
+TEST IT:
+✓ All pages load
+✓ Admin login works
+✓ Contact form works
+✓ Mobile responsive
+✓ HTTPS works (lock icon)
+
+===============================================
+STEP 4: SETUP GOOGLE (15 MINUTES)
+===============================================
+
+A) GOOGLE SEARCH CONSOLE
+
+1. Go to: https://search.google.com/search-console/
+2. Click "Add Property"
+3. Choose "URL prefix"
+4. Type: https://mts-transport.vercel.app
+5. Click "Continue"
+6. Choose "Upload HTML file" method
+7. Download the HTML file
+8. Add it to public/ folder
+9. Push to GitHub (Vercel auto-redeploys)
+10. Verify in Google Search Console
+
+B) SUBMIT SITEMAP
+
+1. In Google Search Console
+2. Left sidebar → "Sitemaps"
+3. Type: mts-transport.vercel.app/sitemap.xml
+4. Click "Submit"
+5. Done! Google will crawl automatically
+
+C) REQUEST INDEXING (OPTIONAL)
+
+1. In Google Search Console
+2. Go to "URL Inspection"
+3. Paste: https://mts-transport.vercel.app/
+4. Click "Request Indexing"
+5. Repeat for other pages
+
+D) ANALYTICS (OPTIONAL)
+
+1. Go to: https://analytics.google.com/
+2. Create account "MTS Transport"
+3. Get Measurement ID (G-XXXXXXX)
+4. Update in index.html:
+   Change "G-XXXXXXX" to your actual ID
+
+===============================================
+VERIFICATION CHECKLIST
+===============================================
+
+□ Website at https://mts-transport.vercel.app/
+□ All pages load
+□ Admin login works
+□ Contact form works
+□ Mobile responsive
+□ HTTPS active (lock icon)
+□ Sitemap at /sitemap.xml
+□ Robots.txt at /robots.txt
+□ Meta tags in HTML
+□ Schema markup in HTML
+□ Google Search Console verified
+□ Sitemap submitted
+□ GitHub repository created
+□ Vercel deployment successful
+
+===============================================
+WHAT HAPPENS NEXT
+===============================================
+
+Day 1: Sitemap submitted to Google
+Day 2-3: Pages indexed by Google
+Week 1-2: Appear in search results
+Week 2-4: Climb rankings
+Month 2+: Top positions
+
+YOUR WEBSITE WILL APPEAR WHEN SOMEONE SEARCHES:
+- MTS Transport
+- Pick and drop service Rawalpindi
+- School transport
+- College transport
+- University pick and drop
+- And more...
+
+===============================================
+TIMELINE & COST
+===============================================
+
+Time: 45 minutes
+Cost: $0 (completely free)
+Domain: mts-transport.vercel.app (free)
+Hosting: Free (Vercel)
+HTTPS: Free
+Sitemap: Free
+Google Tools: Free
+
+TOTAL COST: $0
+
+===============================================
+IMPORTANT NOTES
+===============================================
+
+✓ Do NOT remove any features
+✓ Do NOT change design
+✓ Admin panel MUST work
+✓ Contact form MUST work
+✓ Mobile MUST be responsive
+✓ All pages MUST work on new domain
+✓ Do NOT skip the Google Search Console step
+✓ Do NOT skip submitting sitemap
+
+===============================================
+FINAL RESULT
+===============================================
+
+After completing above:
+
+✓ Website live at https://mts-transport.vercel.app/
+✓ Free hosting (permanent, no expiration)
+✓ Google ranking (SEO optimized)
+✓ HTTPS/SSL (secure)
+✓ Fast loading (Vercel CDN)
+✓ All features working
+✓ Admin secure
+✓ 99.9% uptime
+✓ Zero cost ($0)
+
+WHEN SOMEONE SEARCHES "MTS" ON GOOGLE:
+→ YOUR WEBSITE APPEARS ✓
+
+===============================================
+QUESTIONS?
+===============================================
+
+Website won't deploy?
+- Check GitHub has all files
+- Check vercel.json is in root
+- Check build command: npm run build
+
+Pages not indexed?
+- Verify domain in Search Console
+- Submit sitemap again
+- Request indexing manually
+- Wait 24-48 hours
+
+Sitemap not submitting?
+- Make sure robots.txt is correct
+- Make sure sitemap.xml is in public folder
+- Check URL is exactly: mts-transport.vercel.app/sitemap.xml
+
+Admin login not working?
+- Check code - admin login should still work
+- No changes needed to admin functionality
+- Just deploy as-is
+
+===============================================
+YOU'RE READY!
+
+Follow these 4 steps = Your website is LIVE on Google in 45 minutes!
+
+START NOW!
+===============================================
