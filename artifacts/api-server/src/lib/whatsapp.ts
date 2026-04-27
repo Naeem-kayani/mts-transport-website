@@ -14,7 +14,7 @@ export async function sendWhatsAppNotification(message: string): Promise<void> {
   const url = `https://api.callmebot.com/whatsapp.php?phone=${ADMIN_PHONE}&text=${encoded}&apikey=${apiKey}`;
 
   try {
-   const res = (await fetch(...)) as any;
+    const response = (await fetch(url)) as any;
     if (!response.ok) {
       const body = await response.text();
       logger.warn({ status: response.status, body }, "WhatsApp notification failed");
